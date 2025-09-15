@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Terminal Login - Portfolio</title>
+  <style>
+    body {
+      background: #000;
+      color: #33ff33;
+      font-family: 'Fira Mono', 'Consolas', monospace;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cmd-container {
+      width: 100%;
+      max-width: 600px;
+      min-height: 320px;
+    }
+    .prompt {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+    .cmd-arrow {
+      margin-right: 8px;
+      color: #33ff33;
+      font-weight: bold;
+      min-width: 60px;
+      user-select: none;
+    }
+    .prompt-label {
+      margin-right: 8px;
+      color: #33ff33;
+      min-width: 70px;
+      user-select: none;
+    }
+    input {
+      background: transparent;
+      border: none;
+      color: #33ff33;
+      font: inherit;
+      outline: none;
+      width: 220px;
+      padding: 2px 0 2px 0;
+      font-size: 17px;
+      margin-right: 8px;
+    }
+    input[type="password"] {
+      letter-spacing: 2px;
+    }
+    .output {
+      margin-top: 18px;
+      min-height: 24px;
+      color: #ff3333;
+      font-size: 16px;
+      margin-left: 68px;
+    }
+    .success {
+      color: #33ff33;
+      font-size: 17px;
+      margin-left: 68px;
+    }
+    .cmd-cursor {
+      display: inline-block;
+      width: 12px;
+      height: 18px;
+      background: #33ff33;
+      vertical-align: middle;
+      margin-left: 2px;
+      /* No animation for solid block */
+    }
+    #login-btn {
+      background: none;
+      border: 1px solid #33ff33;
+      color: #33ff33;
+      padding: 3px 16px;
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 8px;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    #login-btn:hover {
+      background: #111;
+    }
+  </style>
+</head>
+<body>
+  <div class="cmd-container" id="terminal">
+    <div id="login-form">
+      <div class="prompt" id="username-prompt">
+        <span class="cmd-arrow">C:\></span>
+        <span class="prompt-label">login</span>
+        <input type="text" id="username" autocomplete="off" autofocus />
+      </div>
+      <div class="prompt" id="password-prompt" style="display:none;">
+        <span class="cmd-arrow">C:\></span>
+        <span class="prompt-label">password</span>
+        <input type="password" id="password" />
+      </div>
+      <div class="prompt" id="login-btn-row" style="display:none;">
+        <span class="cmd-arrow" style="visibility:hidden">C:\></span>
+        <button id="login-btn">Enter</button>
+      </div>
+      <div class="output" id="output"></div>
+    </div>
+    <div id="welcome" style="display:none;">
+      <span class="success">Access granted. Welcome to my portfolio!<span class="cmd-cursor">▮</span></span>
+    </div>
+  </div>
+  <script>
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('login-btn');
+    const output = document.getElementById('output');
+    const loginForm = document.getElementById('login-form');
+    const welcome = document.getElementById('welcome');
+    const usernamePrompt = document.getElementById('username-prompt');
+    const passwordPrompt = document.getElementById('password-prompt');
+    const loginBtnRow = document.getElementById('login-btn-row');
+
+    function fakeLogin(username, password) {
+      // For demo: accept any non-empty username/password
+      return username.trim() !== '' && password.trim() !== '';
+    }
+
+    function handleLogin() {
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      if (fakeLogin(username, password)) {
+        loginForm.style.display = 'none';
+        welcome.style.display = 'block';
+      } else {
+        output.textContent = 'Login incorrect. Try again.';
+      }
+    }
+
+    usernameInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (usernameInput.value.trim() !== '') {
+          usernameInput.disabled = true;
+          passwordPrompt.style.display = '';
+          passwordInput.focus();
+        }
+      }
+    });
+
+    passwordInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (passwordInput.value.trim() !== '') {
+          loginBtnRow.style.display = '';
+          loginBtn.focus();
+        }
+      }
+    });
+
+    loginBtn.addEventListener('click', handleLogin);
+
+    // Optional: allow pressing enter on login button to submit
+    loginBtn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleLogin();
+    });
+  </script>
+</body>
+</html>
+</html>
